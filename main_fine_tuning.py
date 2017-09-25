@@ -236,7 +236,7 @@ def exp_lr_scheduler(optimizer, epoch, init_lr=BASE_LR, lr_decay_epoch=EPOCH_DEC
 
 ### SECTION 4 : DEFINING MODEL ARCHITECTURE.
 
-# We use Resnet18 here. If you have more compatational power, feel free to swap it with Resnet50, Resnet100 or Resnet152.
+# We use Resnet18 here. If you have more computational power, feel free to swap it with Resnet50, Resnet100 or Resnet152.
 # Since we are doing fine-tuning, or transfer learning we will use the pretrained net weights. In the last line, the number of classes has been specified.
 # Set the number of classes in the config file by setting the right value for NUM_CLASSES.
 
