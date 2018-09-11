@@ -56,13 +56,13 @@ count=0
 # If you want to read more, transforms is a function from torchvision, and you can go read more here - http://pytorch.org/docs/master/torchvision/transforms.html
 data_transforms = {
     'train': transforms.Compose([
-        transforms.RandomSizedCrop(224),
+        transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
     'val': transforms.Compose([
-        transforms.Scale(256),
+        transforms.Resize(224),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
@@ -161,7 +161,7 @@ def train_model(model, criterion, optimizer, lr_scheduler, num_epochs=100):
             # Iterate over data.
             for data in dset_loaders[phase]:
                 inputs, labels = data
-
+                print(inputs.size())
                 # wrap them in Variable
                 if use_gpu:
                     try:
@@ -178,28 +178,32 @@ def train_model(model, criterion, optimizer, lr_scheduler, num_epochs=100):
                 _, preds = torch.max(outputs.data, 1)
                 
                 loss = criterion(outputs, labels)
-                print('loss done')                
+                # print('loss done')                
                 # Just so that you can keep track that something's happening and don't feel like the program isn't running.
-                if counter%50==0:
-                    print("Reached iteration ",counter)
+                # if counter%10==0:
+                #     print("Reached iteration ",counter)
                 counter+=1
 
                 # backward + optimize only if in training phase
                 if phase == 'train':
-                    print('loss backward')
-                    loss.backward()
-                    print('done loss backward')
+                    # print('loss backward')
+                    # loss.backward()
+                    # print('done loss backward')
                     optimizer.step()
-                    print('done optim')
+                    # print('done optim')
                 # print evaluation statistics
                 try:
-                    running_loss += loss.data[0]
+                    # running_loss += loss.data[0]
+                    running_loss += loss.item()
+                    # print(labels.data)
+                    # print(preds)
                     running_corrects += torch.sum(preds == labels.data)
+                    # print('running correct =',running_corrects)
                 except:
                     print('unexpected error, could not calculate loss or do a sum.')
             print('trying epoch loss')
             epoch_loss = running_loss / dset_sizes[phase]
-            epoch_acc = running_corrects / dset_sizes[phase]
+            epoch_acc = running_corrects.item() / float(dset_sizes[phase])
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
 
