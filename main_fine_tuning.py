@@ -187,7 +187,7 @@ def train_model(model, criterion, optimizer, lr_scheduler, num_epochs=100):
                 # backward + optimize only if in training phase
                 if phase == 'train':
                     # print('loss backward')
-                    # loss.backward()
+                    loss.backward()
                     # print('done loss backward')
                     optimizer.step()
                     # print('done optim')
